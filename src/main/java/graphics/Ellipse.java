@@ -1,5 +1,7 @@
 package graphics;
 
+import javafx.scene.canvas.GraphicsContext;
+
 import java.util.List;
 import java.util.Map;
 
@@ -80,7 +82,7 @@ public class Ellipse extends Figure implements RoundAboutAvailable {
     }
 
     @Override
-    public void draw() {
+    public void draw(GraphicsContext gc) {
     }
 }
 

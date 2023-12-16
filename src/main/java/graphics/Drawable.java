@@ -22,7 +22,7 @@ abstract public class Drawable {
         return bin_shape_map.get(type).apply(list);
     }
 
-    abstract public void draw();
+    abstract public void draw(GraphicsContext gc);
     protected Map<String, Object> info = new LinkedHashMap<>();
     abstract public Drawable move(double delta_x, double delta_y);
     @Override
@@ -115,6 +115,4 @@ abstract public class Drawable {
         }
         writer.write("\n}");
     }
-
-    abstract public void print(GraphicsContext gc);
 }

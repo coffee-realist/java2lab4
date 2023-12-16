@@ -1,5 +1,7 @@
 package graphics;
 
+import javafx.scene.canvas.GraphicsContext;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Writer;
@@ -58,9 +60,9 @@ public class Geogroup extends Drawable {
     }
 
     @Override
-    public void draw() {
-        for (Drawable drawable : list)
-            drawable.draw();
+    public void draw(GraphicsContext gc) {
+        for (Drawable drawable: list)
+            drawable.draw(gc);
     }
 
     @Override
@@ -122,5 +124,7 @@ public class Geogroup extends Drawable {
         }
         writer.write("\n]\n}");
     }
+
+
 
 }

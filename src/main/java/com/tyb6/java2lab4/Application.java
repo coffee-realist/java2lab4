@@ -1,5 +1,6 @@
 package com.tyb6.java2lab4;
 
+import graphics.DrawableGenerator;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -17,6 +18,7 @@ public class Application extends javafx.application.Application {
     }
 
     public static void main(String[] args) {
+        DrawableGenerator.mixedGroup();
         launch();
     }
 }

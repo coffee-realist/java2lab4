@@ -47,10 +47,10 @@ public class Controller {
             else
                 shapes = Drawable.readBinary(new FileInputStream(input_file));
         }
-        print();
+        draw();
     }
     @FXML
-    public void print() {
+    public void draw() {
         ArrayList<String> shapes_string = new ArrayList<>();
         shapes_list.getItems().clear();
         for (Drawable s: ((Geogroup) shapes).getList())
@@ -58,16 +58,15 @@ public class Controller {
         shapes_list.getItems().addAll(shapes_string);
         GraphicsContext gc;
         gc = main_canvas.getGraphicsContext2D();
-        Stop[] stops = new Stop[] { new Stop(0, Color.web("#ECA3DE")), new Stop(1, Color.web("#00A8BA"))};
-        gc.setStroke(new LinearGradient(0,0,1,0, true, CycleMethod.NO_CYCLE, stops));
+        gc.setStroke(Color.WHEAT);
         gc.setLineWidth(4);
         gc.clearRect(0, 0, main_canvas.getWidth(), main_canvas.getHeight());
-        shapes.print(gc);
+        shapes.draw(gc);
     }
     @FXML
     public void delete() throws IOException {
         for (Integer i: shapes_list.getSelectionModel().getSelectedIndices())
             ((Geogroup) shapes).remove(i);
-        print();
+        draw();
     }
 }

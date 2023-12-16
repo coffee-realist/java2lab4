@@ -1,5 +1,7 @@
 package graphics;
 
+import javafx.scene.canvas.GraphicsContext;
+
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +36,7 @@ public class Dot extends Drawable {
         return new Dot(x + delta_x, y + delta_y);
     }
 
+
     public Dot plus(Dot dot2) {
         return new Dot(x + dot2.getX(), y + dot2.getY());
     }
@@ -60,7 +63,8 @@ public class Dot extends Drawable {
     }
 
     @Override
-    public void draw() {
+    public void draw(GraphicsContext gc) {
+        gc.fillOval(x, y, gc.getLineWidth(), gc.getLineWidth());
     }
     public static Dot createDot(Map<String, Object> keyValueMap) {
         String name = (String) keyValueMap.get("name");

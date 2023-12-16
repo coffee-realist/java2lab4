@@ -1,5 +1,7 @@
 package graphics;
 
+import javafx.scene.canvas.GraphicsContext;
+
 import java.io.Writer;
 import java.util.List;
 import java.util.Map;
@@ -96,6 +98,14 @@ public class Rectangle extends Figure implements RoundAboutAvailable {
     }
 
     @Override
-    public void draw() {
+    public void draw(GraphicsContext gc) {
+        double[] x = new double[4];
+        double[] y = new double[4];
+        Dot[] dots = {dot1, dot2, dot3, dot4};
+        for (int i = 0; i < 4; i++){
+            x[i] = dots[i].getX();
+            y[i] = dots[i].getY();
+        }
+        gc.strokePolygon(x, y, 4);
     }
 }
