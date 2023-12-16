@@ -12,8 +12,9 @@ public class Ellipse extends Figure implements RoundAboutAvailable {
     private final double big_radius;
     private final double rotation;
     private final Dot center;
+
     static {
-        json_shape_map.put("Ellipse", (Map<String, Object> map)->{
+        json_shape_map.put("Ellipse", (Map<String, Object> map) -> {
             Dot center = createDot((Map<String, Object>) map.get("center"));
             double a = Double.parseDouble((String) map.get("big_radius"));
             double b = Double.parseDouble((String) map.get("small_radius"));
@@ -21,7 +22,7 @@ public class Ellipse extends Figure implements RoundAboutAvailable {
 
             return new Ellipse(center, a, b, rotation);
         });
-        bin_shape_map.put("2", (List<Object> list)->{
+        bin_shape_map.put("2", (List<Object> list) -> {
             double x = (double) list.get(0);
             double y = (double) list.get(1);
             double b = (double) list.get(2);
@@ -85,17 +86,17 @@ public class Ellipse extends Figure implements RoundAboutAvailable {
     public void draw(GraphicsContext gc) {
         double center_x = center.getX();
         double center_y = center.getY();
-        double radius = gc.getLineWidth()/2;
-        double max_axis = Math.max(small_radius, big_radius)/2;
-        for (double x = center_x - max_axis; x <= center_x + max_axis; x+=0.2){
-            for (double y = center_y; y <= center_y + max_axis; y+=0.2){
-                if (Math.abs(Math.pow((x - center_x) * Math.cos(rotation) + (y - center_y) * Math.sin(rotation), 2)/Math.pow(big_radius/2, 2) +
-                        Math.pow((x - center_x) * Math.sin(rotation) - (y - center_y) * Math.cos(rotation), 2)/Math.pow(small_radius/2, 2) - 1) < 0.01) {
+        double radius = gc.getLineWidth() / 2;
+        double max_axis = Math.max(small_radius, big_radius) / 2;
+        for (double x = center_x - max_axis; x <= center_x + max_axis; x += 0.2) {
+            for (double y = center_y; y <= center_y + max_axis; y += 0.2) {
+                if (Math.abs(Math.pow((x - center_x) * Math.cos(rotation) + (y - center_y) * Math.sin(rotation), 2) / Math.pow(big_radius / 2, 2) +
+                        Math.pow((x - center_x) * Math.sin(rotation) - (y - center_y) * Math.cos(rotation), 2) / Math.pow(small_radius / 2, 2) - 1) < 0.01) {
                     gc.setFill(gc.getStroke());
-                    gc.fillOval(x - radius, y - radius, radius*2, radius*2);
-                    double rot_x = center_x + (x - center_x)*Math.cos(Math.PI) - (y - center_y)*Math.sin(Math.PI);
-                    double rot_y = center_y + (x - center_x)*Math.sin(Math.PI) + (y - center_y)*Math.cos(Math.PI);
-                    gc.fillOval(rot_x - radius, rot_y - radius, radius*2, radius*2);
+                    gc.fillOval(x - radius, y - radius, radius * 2, radius * 2);
+                    double rot_x = center_x + (x - center_x) * Math.cos(Math.PI) - (y - center_y) * Math.sin(Math.PI);
+                    double rot_y = center_y + (x - center_x) * Math.sin(Math.PI) + (y - center_y) * Math.cos(Math.PI);
+                    gc.fillOval(rot_x - radius, rot_y - radius, radius * 2, radius * 2);
                 }
             }
         }
