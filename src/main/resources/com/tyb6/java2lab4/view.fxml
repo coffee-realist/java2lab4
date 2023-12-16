@@ -22,7 +22,7 @@
         </SplitPane>
         <HBox alignment="CENTER" layoutX="300.0" layoutY="552.0" prefHeight="50.0" prefWidth="200.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="550.0">
             <children>
-                <Button fx:id="open_btn" mnemonicParsing="false" style="-fx-background-color: rgba(255, 255, 255, 0.5);" text="Открыть" />
+                <Button fx:id="open_btn" mnemonicParsing="false" onAction="#open" style="-fx-background-color: rgba(255, 255, 255, 0.5);" text="Открыть" />
             </children>
         </HBox>
         <Label fx:id="label_open" layoutX="192.0" layoutY="563.0" text="файл загружен!" textFill="WHITE" visible="false">
@@ -30,6 +30,6 @@
                 <Font name="Comic Sans MS" size="17.0" />
             </font>
         </Label>
-        <Button fx:id="delete_btn" layoutX="643.0" layoutY="563.0" mnemonicParsing="false" style="-fx-background-color: rgba(255, 255, 255, 0.5);" text="Удалить  фигуру" />
+        <Button fx:id="delete_btn" onAction="#delete" layoutX="643.0" layoutY="563.0" mnemonicParsing="false" style="-fx-background-color: rgba(255, 255, 255, 0.5);" text="Удалить  фигуру" />
     </children>
 </AnchorPane>

@@ -1,5 +1,7 @@
 package graphics;
 
+import javafx.scene.canvas.GraphicsContext;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -113,4 +115,6 @@ abstract public class Drawable {
         }
         writer.write("\n}");
     }
+
+    abstract public void print(GraphicsContext gc);
 }
