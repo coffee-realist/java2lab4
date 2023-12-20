@@ -1,11 +1,13 @@
 package graphics;
 
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
 import static graphics.Dot.createDot;
+
 
 public class JSONParser {
     private static List<Drawable> readShapesFromJSON(InputStream input) throws IOException {
@@ -15,7 +17,7 @@ public class JSONParser {
         jsonString = jsonString.replaceAll("\n", "");
         jsonString = jsonString.substring(jsonString.indexOf("[") + 1, jsonString.lastIndexOf("]"));
         String[] shapeStrings = splitByBrackets(jsonString);
-        Map<String, Object> keyValueMap = null;
+        Map<String, Object> keyValueMap;
         for (String shapeString : shapeStrings) {
             if (shapeString.contains("Group")) {
                 g.addAll(new ArrayList<>(readShapesFromJSON(new ByteArrayInputStream(shapeString.getBytes()))));
@@ -28,7 +30,7 @@ public class JSONParser {
             if (shapeString.charAt(shapeString.length() - 1) == '}') {
                 shapeString = shapeString.substring(0, shapeString.length() - 1);
             }
-            shapeString = shapeString.replaceAll("\\[","").replaceAll("]", "");
+            shapeString = shapeString.replaceAll("\\[", "").replaceAll("]", "");
             keyValueMap = parseKeyValuePairs(shapeString);
             String name = (String) keyValueMap.get("name");
             if (Objects.equals(name, "Dot"))
@@ -41,16 +43,15 @@ public class JSONParser {
 
     public static Map<String, Object> parseKeyValuePairs(String shapeString) {
         Map<String, Object> keyValueMap = new HashMap<>();
-        boolean flag = false;
         int corner_count = 10;
         int max_points = 10;
         List<Map<String, Object>> Dots = new ArrayList<>();
-        String[] keyValues = shapeString.split(",\\s*(?![^\\{]*\\})");
+        String[] keyValues = shapeString.split(",\\s*(?![^{]*})");
         for (String keyValue : keyValues) {
-            if (corner_count < max_points && corner_count != 0){
+            if (corner_count < max_points && corner_count != 0) {
                 keyValue = keyValue.substring(1, keyValue.length() - 1);
                 Dots.add(parseKeyValuePairs(keyValue));
-                corner_count-=1;
+                corner_count -= 1;
                 keyValueMap.put("dots", Dots);
                 continue;
             }
@@ -67,9 +68,9 @@ public class JSONParser {
             }
             if (value.startsWith("{") && value.endsWith("}")) {
                 value = value.substring(1, value.length() - 1);
-                if (key.equals("dots")){
+                if (key.equals("dots")) {
                     Dots.add(parseKeyValuePairs(value));
-                    corner_count-=1;
+                    corner_count -= 1;
                     keyValueMap.put(key, Dots);
                     continue;
                 }
@@ -80,6 +81,7 @@ public class JSONParser {
         }
         return keyValueMap;
     }
+
     public static Geogroup deserializeShapes(InputStream input) throws IOException {
         List<Drawable> figures;
         figures = readShapesFromJSON(input);
@@ -87,6 +89,7 @@ public class JSONParser {
         g.addAll((ArrayList<Drawable>) figures);
         return g;
     }
+
     public static String[] splitByBrackets(String input) {
         int level = 0;
         int start = 0;

@@ -10,8 +10,6 @@ import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.function.Function;
 
-import static graphics.Dot.createDot;
-
 abstract public class Drawable {
     protected static Map<String, Function<Map<String, Object>, Drawable>> json_shape_map = new HashMap<>();
     protected static Map<String, Function<List<Object>, Drawable>> bin_shape_map = new HashMap<>();
@@ -34,29 +32,30 @@ abstract public class Drawable {
 
     @Override
     public int hashCode() {
-        return Objects.hash();
+        int hash = 0;
+        for (Map.Entry<String, Object> map: info.entrySet())
+            hash += map.getValue().hashCode();
+        return hash;
     }
     public void toBinary(FileOutputStream fos) throws IOException {
         int size = info.size();
         for (Map.Entry<String, Object> map: info.entrySet()) {
             if (map.getValue() instanceof Dot[])
-                size += ((Dot[]) map.getValue()).length * 2;
+                size += (((Dot[]) map.getValue()).length) * 4;
             else if (map.getValue() instanceof Dot)
-                size++;
+                size+=3;
         }
         fos.write(ByteBuffer.allocate(8).putDouble(size).array());
         for (Map.Entry<String, Object> map: info.entrySet()) {
             if (map.getValue() instanceof Number)
                 fos.write(ByteBuffer.allocate(8).putDouble(((Number) map.getValue()).doubleValue()).array());
-            else if (map.getValue() instanceof Dot[]) {
-                fos.write(ByteBuffer.allocate(8).putDouble(((Dot[]) map.getValue()).length).array());
-                for (Dot dot : (Dot[]) map.getValue()) {
-                    fos.write(ByteBuffer.allocate(8).putDouble(dot.getX()).array());
-                    fos.write(ByteBuffer.allocate(8).putDouble(dot.getY()).array());
+            else if (map.getValue() instanceof Drawable[]) {
+                fos.write(ByteBuffer.allocate(8).putDouble(((Drawable[]) map.getValue()).length).array());
+                for (Drawable drawable : (Drawable[]) map.getValue()) {
+                    drawable.toBinary(fos);
                 }
-            } else if (map.getValue() instanceof Dot) {
-                fos.write(ByteBuffer.allocate(8).putDouble(((Dot) map.getValue()).getX()).array());
-                fos.write(ByteBuffer.allocate(8).putDouble(((Dot) map.getValue()).getY()).array());
+            } else if (map.getValue() instanceof Drawable) {
+                ((Drawable)map.getValue()).toBinary(fos);
             }
         }
     }
@@ -85,19 +84,19 @@ abstract public class Drawable {
         return buffer.getDouble();
     }
     public void toJSON(Writer writer) throws IOException {
-        writer.write(String.format("{\n\"name\":\"%s\",\n", this.getClass().getSimpleName()));
+        writer.write(String.format("{\n\"name\":\"%s\",\n", this.getClass().getCanonicalName()));
         int j = 0;
         for (Map.Entry<String, Object> map: info.entrySet()) {
             if (map.getValue() instanceof String)
                 writer.write(String.format("\"%s\":\"%s\"", map.getKey(), map.getValue()));
             else if (map.getValue() instanceof Double)
                 writer.write(String.format(Locale.US, "\"%s\":%.5f", map.getKey(), map.getValue()));
-            else if (map.getValue() instanceof Dot[]) {
+            else if (map.getValue() instanceof Drawable[]) {
                 int i = 0;
                 writer.write("\"d_count\":" + ((Dot[]) map.getValue()).length + ",\n");
-                writer.write("\"dots\":[\n");
-                for (Dot dot : (Dot[]) map.getValue()) {
-                    dot.toJSON(writer);
+                writer.write(String.format("\"%s\":[\n", map.getKey()));
+                for (Drawable o : (Drawable[]) map.getValue()) {
+                    o.toJSON(writer);
                     if (i < ((Dot[]) map.getValue()).length - 1)
                         writer.write(",\n");
                     i++;

@@ -11,9 +11,10 @@ public class Triangle extends Figure implements RoundAboutAvailable {
     private final Dot dot1;
     private final Dot dot2;
     private final Dot dot3;
+    static private final String id = "3";
     static {
-        json_shape_map.put("Triangle", (Map<String, Object> map)->{
-            Dot[] dots = new Dot[4];
+        json_shape_map.put(Triangle.class.getCanonicalName(), (Map<String, Object> map)->{
+            Dot[] dots = new Dot[3];
             int i = 0;
             for(Map<String, Object> dot: ((List<Map<String, Object>>) map.get("dots"))){
                 dots[i] = createDot(dot);
@@ -21,12 +22,12 @@ public class Triangle extends Figure implements RoundAboutAvailable {
             }
             return new Triangle(dots[0], dots[1], dots[2]);
         });
-        bin_shape_map.put("3", (List<Object> list)->{
+        bin_shape_map.put(id, (List<Object> list)->{
             Dot[] dots = new Dot[3];
             int d_count = ((Double) list.get(0)).intValue();
             for (int i = 0; i < d_count; i++){
-                double x = (double) list.get(1 + i);
-                double y = (double) list.get(2 + i);
+                double x = (double) list.get(3 + i*4);
+                double y = (double) list.get(4 + i*4);
                 dots[i] = new Dot(x, y);
             }
 
@@ -104,5 +105,6 @@ public class Triangle extends Figure implements RoundAboutAvailable {
             y[i] = dots[i].getY();
         }
         gc.strokePolygon(x, y, 3);
+
     }
 }

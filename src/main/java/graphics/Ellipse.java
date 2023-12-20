@@ -12,9 +12,10 @@ public class Ellipse extends Figure implements RoundAboutAvailable {
     private final double big_radius;
     private final double rotation;
     private final Dot center;
+    static private final String id = "2";
 
     static {
-        json_shape_map.put("Ellipse", (Map<String, Object> map) -> {
+        json_shape_map.put(Ellipse.class.getCanonicalName(), (Map<String, Object> map) -> {
             Dot center = createDot((Map<String, Object>) map.get("center"));
             double a = Double.parseDouble((String) map.get("big_radius"));
             double b = Double.parseDouble((String) map.get("small_radius"));
@@ -22,7 +23,8 @@ public class Ellipse extends Figure implements RoundAboutAvailable {
 
             return new Ellipse(center, a, b, rotation);
         });
-        bin_shape_map.put("2", (List<Object> list) -> {
+        bin_shape_map.put(id, (List<Object> list) -> {
+            list = list.subList(2, list.size());
             double x = (double) list.get(0);
             double y = (double) list.get(1);
             double b = (double) list.get(2);

@@ -61,7 +61,7 @@ public class Geogroup extends Drawable {
 
     @Override
     public void draw(GraphicsContext gc) {
-        for (Drawable drawable: list)
+        for (Drawable drawable : list)
             drawable.draw(gc);
     }
 
@@ -124,7 +124,5 @@ public class Geogroup extends Drawable {
         }
         writer.write("\n]\n}");
     }
-
-
 
 }

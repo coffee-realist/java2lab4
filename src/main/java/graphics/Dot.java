@@ -8,8 +8,14 @@ import java.util.Map;
 public class Dot extends Drawable {
     private final double x;
     private final double y;
+    static private final String id = "0";
     static {
-        bin_shape_map.put("0", (List<Object> list)->{
+        json_shape_map.put(Dot.class.getCanonicalName(), (Map<String, Object> map)->{
+            double x = Double.parseDouble((String) map.get("x"));
+            double y = Double.parseDouble((String) map.get("y"));
+            return new Dot(x, y);
+        });
+        bin_shape_map.put(id, (List<Object> list)->{
             double x = (double) list.get(0);
             double y = (double) list.get(1);
             return new Dot(x, y);
@@ -35,7 +41,6 @@ public class Dot extends Drawable {
     public Dot move(double delta_x, double delta_y) {
         return new Dot(x + delta_x, y + delta_y);
     }
-
 
     public Dot plus(Dot dot2) {
         return new Dot(x + dot2.getX(), y + dot2.getY());
